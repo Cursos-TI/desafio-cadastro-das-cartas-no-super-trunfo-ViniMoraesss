@@ -1,0 +1,164 @@
+#include <stdio.h>
+
+// Constantes para direções
+#define CIMA 1
+#define BAIXO 2
+#define ESQUERDA 3
+#define DIREITA 4
+
+// Função recursiva para mover a Torre
+void moverTorre(int casas, int direcao) {
+    // Caso base - quando não há mais casas para mover
+    if (casas <= 0) {
+        return;
+    }
+    
+    // Imprime a direção do movimento atual
+    switch(direcao) {
+        case CIMA:
+            printf("Cima\n");
+            break;
+        case BAIXO:
+            printf("Baixo\n");
+            break;
+        case ESQUERDA:
+            printf("Esquerda\n");
+            break;
+        case DIREITA:
+            printf("Direita\n");
+            break;
+    }
+    
+    // Chamada recursiva para a próxima casa
+    moverTorre(casas - 1, direcao);
+}
+
+// Função recursiva para mover o Bispo (diagonal)
+void moverBispo(int casas, int direcaoVertical, int direcaoHorizontal) {
+    // Caso base
+    if (casas <= 0) {
+        return;
+    }
+    
+    // Imprime as direções do movimento diagonal
+    if (direcaoVertical == CIMA && direcaoHorizontal == DIREITA) {
+        printf("Cima-Direita\n");
+    } else if (direcaoVertical == CIMA && direcaoHorizontal == ESQUERDA) {
+        printf("Cima-Esquerda\n");
+    } else if (direcaoVertical == BAIXO && direcaoHorizontal == DIREITA) {
+        printf("Baixo-Direita\n");
+    } else if (direcaoVertical == BAIXO && direcaoHorizontal == ESQUERDA) {
+        printf("Baixo-Esquerda\n");
+    }
+    
+    // Chamada recursiva
+    moverBispo(casas - 1, direcaoVertical, direcaoHorizontal);
+}
+
+// Função para mover o Cavalo com loops complexos
+void moverCavalo() {
+    // Movimento em L: 2 casas para cima, 1 para direita
+    for (int vertical = 0; vertical < 2; vertical++) {
+        // Verifica se devemos continuar o movimento
+        if (vertical == 1) {
+            printf("Cima\n"); // Segunda casa para cima
+        } else {
+            printf("Cima\n"); // Primeira casa para cima
+        }
+        
+        // Loop para o movimento horizontal
+        for (int horizontal = 0; horizontal < 1; horizontal++) {
+            // Só vamos mover uma casa para direita após as duas para cima
+            if (vertical == 1) {
+                printf("Direita\n");
+                break; // Só queremos mover uma vez para direita
+            }
+        }
+    }
+}
+
+// Função recursiva para mover a Rainha (combina torre e bispo)
+void moverRainha(int casas, int direcaoVertical, int direcaoHorizontal) {
+    // Caso base
+    if (casas <= 0) {
+        return;
+    }
+    
+    // Movimento reto (como a torre)
+    if (direcaoHorizontal == 0) {
+        switch(direcaoVertical) {
+            case CIMA:
+                printf("Cima\n");
+                break;
+            case BAIXO:
+                printf("Baixo\n");
+                break;
+        }
+    } 
+    // Movimento lateral (como a torre)
+    else if (direcaoVertical == 0) {
+        switch(direcaoHorizontal) {
+            case ESQUERDA:
+                printf("Esquerda\n");
+                break;
+            case DIREITA:
+                printf("Direita\n");
+                break;
+        }
+    } 
+    // Movimento diagonal (como o bispo)
+    else {
+        if (direcaoVertical == CIMA && direcaoHorizontal == DIREITA) {
+            printf("Cima-Direita\n");
+        } else if (direcaoVertical == CIMA && direcaoHorizontal == ESQUERDA) {
+            printf("Cima-Esquerda\n");
+        } else if (direcaoVertical == BAIXO && direcaoHorizontal == DIREITA) {
+            printf("Baixo-Direita\n");
+        } else if (direcaoVertical == BAIXO && direcaoHorizontal == ESQUERDA) {
+            printf("Baixo-Esquerda\n");
+        }
+    }
+    
+    // Chamada recursiva
+    moverRainha(casas - 1, direcaoVertical, direcaoHorizontal);
+}
+
+// Versão alternativa do Bispo com loops aninhados
+void moverBispoComLoops(int casas) {
+    // Loop externo para controle vertical
+    for (int v = 0; v < casas; v++) {
+        // Loop interno para controle horizontal
+        for (int h = 0; h < casas; h++) {
+            // Só imprimimos quando os índices forem iguais (diagonal)
+            if (v == h) {
+                printf("Baixo-Direita\n");
+                break; // Só uma direção por passo vertical
+            }
+        }
+    }
+}
+
+int main() {
+    int casas = 3; // Número de casas a mover
+    
+    printf("=== MOVIMENTO DA TORRE ===\n");
+    moverTorre(casas, DIREITA);
+    printf("\n");
+    
+    printf("=== MOVIMENTO DO BISPO (RECURSIVO) ===\n");
+    moverBispo(casas, BAIXO, DIREITA);
+    printf("\n");
+    
+    printf("=== MOVIMENTO DO CAVALO ===\n");
+    moverCavalo();
+    printf("\n");
+    
+    printf("=== MOVIMENTO DA RAINHA ===\n");
+    moverRainha(casas, CIMA, DIREITA);
+    printf("\n");
+    
+    printf("=== MOVIMENTO DO BISPO (COM LOOPS ANINHADOS) ===\n");
+    moverBispoComLoops(casas);
+    
+    return 0;
+}
